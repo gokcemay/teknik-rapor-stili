@@ -21,31 +21,65 @@ danışmanlık dönem raporu, fizibilite raporu, SOP ve teknik doküman.
 
 ## Kurulum
 
-**Claude uygulamasında:** `dist/teknik-rapor-stili.skill` dosyasını indirin ve
-sohbete yükleyip **Save skill** düğmesine basın.
+**Claude Code'da (tek komutla):**
 
-**Claude Code'da:**
+```
+/plugin marketplace add gokcemay/teknik-rapor-stili
+/plugin install teknik-rapor-stili@gokcemay-plugins
+```
+
+Kurulum sonrası `Run /reload-plugins to activate.` uyarısı çıkarsa `/reload-plugins`
+komutunu çalıştırın. Slash komutları eklenti adıyla ad alanına girer:
+`/teknik-rapor-stili:rapor`, `/teknik-rapor-stili:stil` gibi.
+
+**Claude uygulamasında:** `dist/teknik-rapor-stili.skill` dosyasını indirin,
+sohbete yükleyip **Save skill** düğmesine basın. Uygulamada sohbete komut yazarak
+kurulum yapılamaz; kurulum kullanıcı onayıyla arayüzden yapılır.
+
+**Elle kurulum (Claude Code, eklenti istemeyenler için):**
 
 ```bash
-git clone https://github.com/gokcemay/teknik-rapor-stili.git \
-  ~/.claude/skills/teknik-rapor-stili
+git clone https://github.com/gokcemay/teknik-rapor-stili.git /tmp/trs
+cp -r /tmp/trs/plugins/teknik-rapor-stili/skills/teknik-rapor-stili ~/.claude/skills/
+cp /tmp/trs/plugins/teknik-rapor-stili/commands/*.md ~/.claude/commands/
 ```
 
 Skill, "teknik rapor yaz", "raporu düzenle", "stil kontrolü yap",
 "technical report", "style check" gibi ifadelerde kendiliğinden devreye girer.
 
+## Kısayollar
+
+| Kısayol | Ne yapar |
+|---|---|
+| `/rapor` | Türkçe rapor yazar |
+| `/rapor-en` | İngilizce rapor yazar |
+| `/stil` | Metni değiştirmeden stil denetimi yapar, bulgu tablosu verir |
+| `/duzelt` | Metni kurallara göre düzeltir, değişiklik özeti ekler |
+| `/iskelet` | Rapor türüne uygun iskeleti verir |
+| `/rapor-tr-en` | İki dilde yazar, sayı ve tarih biçimlerini dönüştürür |
+
+Claude uygulamasında bu kısayollar düz metin olarak çalışır (`/rapor` yazmak
+yeterli). Claude Code'da eklenti kuruluysa gerçek slash komutu olarak listelenir
+ve ad alanı önekiyle çağrılır: `/teknik-rapor-stili:rapor`.
+
 ## Yapı
 
 ```
 teknik-rapor-stili/
-├── SKILL.md                      # dil ve mod seçimi, ortak çekirdek kurallar
-├── references/
-│   ├── tr-style.md               # Türkçe kurallar
-│   └── en-style.md               # İngilizce kurallar
-├── assets/
-│   └── report-skeleton.md        # rapor iskeletleri (deney, dönem, SOP, fizibilite)
+├── .claude-plugin/
+│   └── marketplace.json          # eklenti kataloğu (marketplace)
+├── plugins/teknik-rapor-stili/
+│   ├── .claude-plugin/plugin.json
+│   ├── skills/teknik-rapor-stili/
+│   │   ├── SKILL.md              # dil ve mod seçimi, ortak çekirdek kurallar
+│   │   ├── references/
+│   │   │   ├── tr-style.md       # Türkçe kurallar
+│   │   │   └── en-style.md       # İngilizce kurallar
+│   │   └── assets/
+│   │       └── report-skeleton.md  # rapor iskeletleri
+│   └── commands/                 # slash komutları
 └── dist/
-    └── teknik-rapor-stili.skill  # kurulabilir paket
+    └── teknik-rapor-stili.skill  # Claude uygulaması için kurulabilir paket
 ```
 
 Progressive disclosure ilkesine göre yalnızca ilgili dil dosyası okunur; iki

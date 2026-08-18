@@ -1,0 +1,23 @@
+{
+  "name": "gokcemay-plugins",
+  "owner": {
+    "name": "Gökçe M. AY",
+    "url": "https://gmay.me"
+  },
+  "metadata": {
+    "description": "Teknik yazım ve mühendislik dokümantasyonu için Claude Code eklentileri"
+  },
+  "plugins": [
+    {
+      "name": "teknik-rapor-stili",
+      "source": "./plugins/teknik-rapor-stili",
+      "description": "Teknik rapor yazımı için Türkçe ve İngilizce stil kuralları; Google developer documentation style guide'dan rapor türüne uyarlanmıştır.",
+      "version": "1.0.0",
+      "author": { "name": "Gökçe M. AY" },
+      "homepage": "https://github.com/gokcemay/teknik-rapor-stili",
+      "license": "CC-BY-4.0",
+      "category": "documentation",
+      "tags": ["technical-writing", "turkish", "english", "style-guide", "reports"]
+    }
+  ]
+}

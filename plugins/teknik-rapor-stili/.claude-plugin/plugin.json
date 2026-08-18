@@ -1,0 +1,9 @@
+{
+  "name": "teknik-rapor-stili",
+  "version": "1.0.0",
+  "description": "Teknik rapor yazımı için Türkçe ve İngilizce stil kuralları; Google developer documentation style guide'dan rapor türüne uyarlanmıştır.",
+  "author": { "name": "Gökçe M. AY" },
+  "homepage": "https://github.com/gokcemay/teknik-rapor-stili",
+  "license": "CC-BY-4.0",
+  "keywords": ["technical-writing", "turkish", "style-guide", "reports"]
+}

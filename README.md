@@ -19,24 +19,47 @@ Skill, üç modda çalışır:
 Kapsadığı doküman türleri: deney/test raporu, proje ara ve sonuç raporu,
 danışmanlık dönem raporu, fizibilite raporu, SOP ve teknik doküman.
 
-## Kurulum
+## Claude Code'da kullanım (eklenti)
 
-**Claude Code'da (tek komutla):**
+Kurulum iki komut. Terminalde `/plugin` paneli açılmıyorsa (desktop uygulaması
+veya bulut oturumu) kabuk sürümünü kullanın:
 
 ```
 /plugin marketplace add gokcemay/teknik-rapor-stili
 /plugin install teknik-rapor-stili@gokcemay-plugins
 ```
 
-Kurulum sonrası `Run /reload-plugins to activate.` uyarısı çıkarsa `/reload-plugins`
-komutunu çalıştırın. Slash komutları eklenti adıyla ad alanına girer:
-`/teknik-rapor-stili:rapor`, `/teknik-rapor-stili:stil` gibi.
+```bash
+claude plugin marketplace add gokcemay/teknik-rapor-stili
+claude plugin install teknik-rapor-stili@gokcemay-plugins
+```
 
-**Claude uygulamasında:** `dist/teknik-rapor-stili.skill` dosyasını indirin,
-sohbete yükleyip **Save skill** düğmesine basın. Uygulamada sohbete komut yazarak
-kurulum yapılamaz; kurulum kullanıcı onayıyla arayüzden yapılır.
+Kabuk sürümüyle kurduysanız eklenti bir sonraki oturumda yüklenir. Açık bir
+oturum varsa `/reload-plugins`, uyarı verirse `/reload-plugins --force` çalıştırın.
+Desktop uygulamasında komutlar görünmüyorsa uygulamayı bildirim alanından
+tamamen kapatıp yeniden açın.
 
-**Elle kurulum (Claude Code, eklenti istemeyenler için):**
+Komutlar eklenti adıyla ad alanına girer:
+
+| Komut | Ne yapar |
+|---|---|
+| `/teknik-rapor-stili:rapor` | Türkçe rapor veya bölüm yazar |
+| `/teknik-rapor-stili:rapor-en` | İngilizce rapor veya bölüm yazar |
+| `/teknik-rapor-stili:stil` | Metni değiştirmeden denetler, bulgu tablosu verir |
+| `/teknik-rapor-stili:duzelt` | Metni düzeltir, değişiklik özeti ekler |
+| `/teknik-rapor-stili:iskelet` | Rapor türüne uygun iskeleti verir |
+
+Komutun ardına metni veya dosya yolunu ekleyin:
+
+```
+/teknik-rapor-stili:stil raporlar/agustos-donem-raporu.md
+/teknik-rapor-stili:iskelet fizibilite
+```
+
+Komut kullanmadan da çalışır: "bu bölümü rapor diline çevir" gibi bir istekte
+skill kendiliğinden devreye girer.
+
+**Eklenti istemeyenler için elle kurulum:**
 
 ```bash
 git clone https://github.com/gokcemay/teknik-rapor-stili.git /tmp/trs
@@ -44,23 +67,58 @@ cp -r /tmp/trs/plugins/teknik-rapor-stili/skills/teknik-rapor-stili ~/.claude/sk
 cp /tmp/trs/plugins/teknik-rapor-stili/commands/*.md ~/.claude/commands/
 ```
 
-Skill, "teknik rapor yaz", "raporu düzenle", "stil kontrolü yap",
-"technical report", "style check" gibi ifadelerde kendiliğinden devreye girer.
+## Claude uygulamasında kullanım (skill)
 
-## Kısayollar
+`dist/teknik-rapor-stili.skill` dosyasını indirin, sohbete yükleyin ve dosya
+kartındaki **Save skill** düğmesine basın. Sohbete komut yazarak kurulum
+yapılamaz; kurulum kullanıcı onayıyla arayüzden geçer.
+
+Kurulduktan sonra kısayollar düz metin olarak çalışır — ad alanı öneki gerekmez:
 
 | Kısayol | Ne yapar |
 |---|---|
 | `/rapor` | Türkçe rapor yazar |
 | `/rapor-en` | İngilizce rapor yazar |
-| `/stil` | Metni değiştirmeden stil denetimi yapar, bulgu tablosu verir |
-| `/duzelt` | Metni kurallara göre düzeltir, değişiklik özeti ekler |
-| `/iskelet` | Rapor türüne uygun iskeleti verir |
+| `/stil` | Metni değiştirmeden denetler |
+| `/duzelt` | Metni düzeltir, değişiklik özeti ekler |
+| `/iskelet` | Rapor iskeleti verir |
 | `/rapor-tr-en` | İki dilde yazar, sayı ve tarih biçimlerini dönüştürür |
 
-Claude uygulamasında bu kısayollar düz metin olarak çalışır (`/rapor` yazmak
-yeterli). Claude Code'da eklenti kuruluysa gerçek slash komutu olarak listelenir
-ve ad alanı önekiyle çağrılır: `/teknik-rapor-stili:rapor`.
+Örnek:
+
+```
+/stil
+[denetlenecek paragrafı buraya yapıştırın]
+```
+
+Uzun bir raporu dosya olarak yükleyip `/duzelt` yazmak da çalışır.
+
+## Claude dışındaki araçlarda kullanım
+
+Skill'in içeriği düz Markdown olduğu için başka ortamlarda da kullanılabilir.
+Otomatik tetikleme yalnızca Claude'da çalışır; diğer araçlarda ilgili dosyayı
+siz yüklersiniz.
+
+**Kod editörleri (Cursor, Windsurf, Copilot ve benzerleri):** proje kökündeki
+kural veya talimat dosyasına `references/tr-style.md` ya da `references/en-style.md`
+içeriğini kopyalayın. `AGENTS.md` konvansiyonunu kullanan araçlarda bu dosyaya
+"Teknik rapor yazarken şu kurallara uy" başlığıyla ekleyin. Tek dosya sınırı
+varsa yalnızca çalıştığınız dilin referansını koyun; ikisi birden gereksiz
+bağlam yükü yaratır.
+
+**ChatGPT, Gemini ve benzeri sohbet araçları:** ilgili referans dosyasını proje
+talimatı, özel yönerge (custom instructions) veya Gem tanımı olarak yapıştırın.
+Uzunluk sınırına takılırsanız dosyanın 9. bölümündeki "Hızlı öz denetim"
+listesiyle başlayın; en çok işi o bölüm görür.
+
+**Yerel modeller (Ollama, LM Studio ve benzerleri):** referans dosyasını sistem
+istemi olarak verin. Bağlam penceresi darsa SKILL.md'nin çekirdek kurallar
+bölümü ile tek dil referansı yeterlidir.
+
+**İnsan ekipler için:** dosyalar eklentiden bağımsız birer yazım kılavuzu olarak
+okunabilir. `references/tr-style.md` ve `references/en-style.md` kurum içi stil
+kılavuzu olarak dağıtılabilir; `assets/report-skeleton.md` rapor şablonu olarak
+kullanılabilir. Lisans buna izin verir, atıf yeterlidir.
 
 ## Yapı
 
